@@ -21,15 +21,24 @@
             max-width: 600px;
             color: white;
         }
-        .menu, .reviews {
+        .menu, .reviews, .register, .login {
             display: none;
         }
-        .menu-content, .review-content {
+        .menu-content, .review-content, .register-content, .login-content {
             background: #f4a261;
             color: #264653;
             padding: 15px;
             border-radius: 5px;
             text-align: left;
+        }
+        .nav-links {
+            background-color: #264653;
+            color: white;
+            padding: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-evenly;
+            border-radius: 10px;
         }
         footer {
             background-color: #2a9d8f;
@@ -52,13 +61,59 @@
         button:hover {
             background: #264653;
         }
+        input[type="text"], input[type="password"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
     </style>
     <script>
+        let users = [];
+
         function showPage(page) {
             document.getElementById('home').style.display = 'none';
             document.getElementById('menu').style.display = 'none';
             document.getElementById('reviews').style.display = 'none';
+            document.getElementById('register').style.display = 'none';
+            document.getElementById('login').style.display = 'none';
             document.getElementById(page).style.display = 'block';
+        }
+
+        function addReview() {
+            const text = document.getElementById("reviewText").value;
+            if (text.trim() !== "") {
+                let li = document.createElement("li");
+                li.textContent = text;
+                document.getElementById("reviewList").appendChild(li);
+                document.getElementById("reviewText").value = "";
+            }
+        }
+
+        function registerUser() {
+            const email = document.getElementById("regEmail").value;
+            const password = document.getElementById("regPassword").value;
+            const confirmPassword = document.getElementById("confirmPassword").value;
+            if (password !== confirmPassword) {
+                alert("Heslá sa musia zhodovať!");
+                return;
+            }
+            users.push({ email, password });
+            alert("Úspešne zaregistrovaný!");
+            showPage('login');
+        }
+
+        function loginUser() {
+            const email = document.getElementById("loginEmail").value;
+            const password = document.getElementById("loginPassword").value;
+            const user = users.find(u => u.email === email && u.password === password);
+            if (user) {
+                alert("Úspešne prihlásený!");
+                showPage('reviews');
+            } else {
+                alert("Nesprávny email alebo heslo.");
+            }
         }
     </script>
 </head>
@@ -68,8 +123,11 @@
         <p>Otváracie hodiny: Po - Ne: 10:00 - 22:00</p>
         <p>Telefón: +421 123 456 789</p>
         <p>Adresa: Žiar nad Hronom, Slovensko</p>
-        <button onclick="showPage('menu')">Menu</button>
-        <button onclick="showPage('reviews')">Recenzie</button>
+
+        <div class="nav-links">
+            <button onclick="showPage('menu')">Menu</button>
+            <button onclick="showPage('reviews')">Recenzie</button>
+        </div>
     </div>
     
     <div id="menu" class="container menu">
@@ -95,30 +153,36 @@
     <div id="reviews" class="container reviews">
         <h2>Recenzie</h2>
         <div class="review-content">
-            <h3>Pridať recenziu</h3>
-            <textarea id="reviewText" placeholder="Napíšte svoju recenziu" rows="4" cols="50"></textarea>
-            <br>
-            <button onclick="addReview()">Odoslať</button>
-            <h3>Prečítajte si recenzie</h3>
-            <ul id="reviewList"></ul>
+            <h3>Pre pridanie recenzie sa musíte prihlásiť alebo zaregistrovať</h3>
+            <button onclick="showPage('login')">Prihlásiť sa</button>
+            <button onclick="showPage('register')">Zaregistrovať sa</button>
         </div>
         <button onclick="showPage('home')">Späť</button>
     </div>
     
+    <div id="register" class="container register">
+        <h2>Zaregistrovať sa</h2>
+        <div class="register-content">
+            <input type="text" id="regEmail" placeholder="Zadajte váš email">
+            <input type="password" id="regPassword" placeholder="Zadajte vaše heslo">
+            <input type="password" id="confirmPassword" placeholder="Potvrďte heslo">
+            <button onclick="registerUser()">Zaregistrovať sa</button>
+        </div>
+        <button onclick="showPage('home')">Späť</button>
+    </div>
+    
+    <div id="login" class="container login">
+        <h2>Prihlásiť sa</h2>
+        <div class="login-content">
+            <input type="text" id="loginEmail" placeholder="Zadajte váš email">
+            <input type="password" id="loginPassword" placeholder="Zadajte vaše heslo">
+            <button onclick="loginUser()">Prihlásiť sa</button>
+        </div>
+        <button onclick="showPage('home')">Späť</button>
+    </div>
+
     <footer>
         <p>&copy; 2024 Vietnam Reštaurácia - Žiar nad Hronom</p>
     </footer>
-    
-    <script>
-        function addReview() {
-            let text = document.getElementById("reviewText").value;
-            if (text.trim() !== "") {
-                let li = document.createElement("li");
-                li.textContent = text;
-                document.getElementById("reviewList").appendChild(li);
-                document.getElementById("reviewText").value = "";
-            }
-        }
-    </script>
 </body>
 </html>

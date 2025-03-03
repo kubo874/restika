@@ -9,43 +9,72 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background: url('https://source.unsplash.com/random/1920x1080') no-repeat center center fixed;
-            background-size: cover;
-            color: white;
+            background: #f4f1de;
+            color: #264653;
             text-align: center;
         }
         .container {
-            background: rgba(0, 0, 0, 0.7);
+            background: #e76f51;
             padding: 20px;
-            margin: 20px;
+            margin: 20px auto;
             border-radius: 10px;
+            max-width: 600px;
+            color: white;
         }
-        .menu {
-            background: rgba(255, 255, 255, 0.8);
-            color: black;
+        .menu, .reviews {
+            display: none;
+        }
+        .menu-content, .review-content {
+            background: #f4a261;
+            color: #264653;
             padding: 15px;
-            display: inline-block;
             border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: left;
         }
         footer {
-            background-color: black;
+            background-color: #2a9d8f;
             color: white;
             padding: 10px;
             position: fixed;
             bottom: 0;
             width: 100%;
         }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background: #2a9d8f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background: #264653;
+        }
     </style>
+    <script>
+        function showPage(page) {
+            document.getElementById('home').style.display = 'none';
+            document.getElementById('menu').style.display = 'none';
+            document.getElementById('reviews').style.display = 'none';
+            document.getElementById(page).style.display = 'block';
+        }
+    </script>
 </head>
 <body>
-    <div class="container">
-        <h1>Vietnam Reštaurácia - Žiar nad Hronom</h1>
-        <p>Vitajte v našej reštaurácii! U nás nájdete autentické vietnamské jedlá.</p>
-        
-        <div class="menu">
-            <h2>Menu</h2>
+    <div id="home" class="container">
+        <h1>Vitajte v Vietnam Reštaurácia - Žiar nad Hronom</h1>
+        <p>Otváracie hodiny: Po - Ne: 10:00 - 22:00</p>
+        <p>Telefón: +421 123 456 789</p>
+        <p>Adresa: Žiar nad Hronom, Slovensko</p>
+        <button onclick="showPage('menu')">Menu</button>
+        <button onclick="showPage('reviews')">Recenzie</button>
+    </div>
+    
+    <div id="menu" class="container menu">
+        <h2>Menu</h2>
+        <div class="menu-content">
             <ul>
                 <li>Kuracie Kung-Pao - 5,50€</li>
                 <li>Kuracie so zeleninou - 5,50€</li>
@@ -60,13 +89,36 @@
                 <li>Pho Vietnam - 6,80€</li>
             </ul>
         </div>
+        <button onclick="showPage('home')">Späť</button>
     </div>
-
+    
+    <div id="reviews" class="container reviews">
+        <h2>Recenzie</h2>
+        <div class="review-content">
+            <h3>Pridať recenziu</h3>
+            <textarea id="reviewText" placeholder="Napíšte svoju recenziu" rows="4" cols="50"></textarea>
+            <br>
+            <button onclick="addReview()">Odoslať</button>
+            <h3>Prečítajte si recenzie</h3>
+            <ul id="reviewList"></ul>
+        </div>
+        <button onclick="showPage('home')">Späť</button>
+    </div>
+    
     <footer>
-        <p>Adresa: Žiar nad Hronom, Slovensko</p>
-        <p>Telefón: +421 123 456 789</p>
-        <p>Otváracie hodiny: Po - Ne: 10:00 - 22:00</p>
+        <p>&copy; 2024 Vietnam Reštaurácia - Žiar nad Hronom</p>
     </footer>
+    
+    <script>
+        function addReview() {
+            let text = document.getElementById("reviewText").value;
+            if (text.trim() !== "") {
+                let li = document.createElement("li");
+                li.textContent = text;
+                document.getElementById("reviewList").appendChild(li);
+                document.getElementById("reviewText").value = "";
+            }
+        }
+    </script>
 </body>
 </html>
-
